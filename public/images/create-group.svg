@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#F0F9FF"/>
+  
+  <!-- Background Elements -->
+  <circle cx="400" cy="300" r="250" fill="#3B82F6" fill-opacity="0.1"/>
+  <circle cx="400" cy="300" r="200" fill="#3B82F6" fill-opacity="0.05"/>
+  
+  <!-- Phone Outline -->
+  <rect x="275" y="100" width="250" height="450" rx="30" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="4"/>
+  <rect x="290" y="120" width="220" height="410" rx="16" fill="#F3F4F6"/>
+  
+  <!-- App UI Elements -->
+  <rect x="290" y="120" width="220" height="70" rx="16" fill="#3B82F6"/>
+  <text x="325" y="165" font-family="Arial" font-weight="bold" font-size="20" fill="white">Create Group</text>
+  
+  <!-- Group Avatar Area -->
+  <circle cx="350" cy="240" r="40" fill="#DBEAFE" stroke="#3B82F6" stroke-width="3"/>
+  <text x="336" y="250" font-family="Arial" font-weight="bold" font-size="24" fill="#3B82F6">G</text>
+  <rect x="410" y="220" width="80" height="10" rx="5" fill="#D1D5DB"/>
+  <rect x="410" y="240" width="60" height="10" rx="5" fill="#D1D5DB"/>
+  
+  <!-- Group Title Input -->
+  <rect x="310" y="300" width="180" height="50" rx="10" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2"/>
+  <text x="325" y="330" font-family="Arial" font-size="14" fill="#6B7280">Group Name</text>
+  
+  <!-- Add Members Section -->
+  <rect x="310" y="370" width="180" height="1" fill="#E5E7EB"/>
+  <text x="310" y="395" font-family="Arial" font-weight="bold" font-size="14" fill="#374151">Add Members</text>
+  
+  <!-- Member Avatars -->
+  <circle cx="330" cy="425" r="20" fill="#BFDBFE"/>
+  <text x="324" y="430" font-family="Arial" font-weight="bold" font-size="12" fill="#3B82F6">J</text>
+  
+  <circle cx="375" cy="425" r="20" fill="#BFDBFE"/>
+  <text x="369" y="430" font-family="Arial" font-weight="bold" font-size="12" fill="#3B82F6">S</text>
+  
+  <circle cx="420" cy="425" r="20" fill="#BFDBFE"/>
+  <text x="414" y="430" font-family="Arial" font-weight="bold" font-size="12" fill="#3B82F6">M</text>
+  
+  <circle cx="465" cy="425" r="20" fill="#DBEAFE" stroke="#3B82F6" stroke-dasharray="4 2" stroke-width="2"/>
+  <text x="460" y="430" font-family="Arial" font-weight="bold" font-size="16" fill="#3B82F6">+</text>
+  
+  <!-- Create Button -->
+  <rect x="310" y="480" width="180" height="40" rx="20" fill="#3B82F6"/>
+  <text x="362" y="505" font-family="Arial" font-weight="bold" font-size="14" fill="white">Create Group</text>
+  
+  <!-- User Icons Around -->
+  <g transform="translate(150, 200)">
+    <circle cx="0" cy="0" r="40" fill="#BFDBFE"/>
+    <circle cx="0" cy="-15" r="12" fill="#3B82F6"/>
+    <rect x="-20" y="5" width="40" height="25" rx="12" fill="#3B82F6"/>
+  </g>
+  
+  <g transform="translate(600, 180)">
+    <circle cx="0" cy="0" r="35" fill="#BFDBFE"/>
+    <circle cx="0" cy="-12" r="10" fill="#3B82F6"/>
+    <rect x="-17" y="5" width="34" height="20" rx="10" fill="#3B82F6"/>
+  </g>
+  
+  <g transform="translate(180, 450)">
+    <circle cx="0" cy="0" r="30" fill="#BFDBFE"/>
+    <circle cx="0" cy="-10" r="9" fill="#3B82F6"/>
+    <rect x="-15" y="3" width="30" height="18" rx="9" fill="#3B82F6"/>
+  </g>
+  
+  <g transform="translate(620, 420)">
+    <circle cx="0" cy="0" r="38" fill="#BFDBFE"/>
+    <circle cx="0" cy="-14" r="11" fill="#3B82F6"/>
+    <rect x="-19" y="4" width="38" height="24" rx="11" fill="#3B82F6"/>
+  </g>
+  
+  <!-- Connection Lines -->
+  <line x1="190" y1="200" x2="290" y2="240" stroke="#3B82F6" stroke-width="2" stroke-dasharray="4 2"/>
+  <line x1="565" y1="180" x2="470" y2="240" stroke="#3B82F6" stroke-width="2" stroke-dasharray="4 2"/>
+  <line x1="210" y1="450" x2="310" y2="425" stroke="#3B82F6" stroke-width="2" stroke-dasharray="4 2"/>
+  <line x1="582" y1="420" x2="490" y2="425" stroke="#3B82F6" stroke-width="2" stroke-dasharray="4 2"/>
+</svg>
