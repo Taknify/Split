@@ -3,7 +3,6 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Link from 'next/link';
 import Image from 'next/image';
-
 export default function CreateVirtualCard() {
   return (
     <main>
@@ -14,7 +13,6 @@ export default function CreateVirtualCard() {
             <h1 className="text-3xl font-bold mb-2">Create Virtual Card</h1>
             <p className="text-gray-600">Generate a virtual card for immediate payment</p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div className="md:col-span-2">
               <div className="bg-white rounded-lg shadow-md p-6 mb-6">
@@ -41,7 +39,6 @@ export default function CreateVirtualCard() {
                     <span className="font-medium">Equal Split (4 people)</span>
                   </div>
                 </div>
-
                 <h3 className="font-medium mb-2">Participants</h3>
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
@@ -60,7 +57,6 @@ export default function CreateVirtualCard() {
                       Card on File
                     </div>
                   </div>
-
                   <div className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
                     <div className="flex items-center">
                       <div className="h-10 w-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center mr-3">
@@ -75,7 +71,6 @@ export default function CreateVirtualCard() {
                       Card on File
                     </div>
                   </div>
-
                   <div className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
                     <div className="flex items-center">
                       <div className="h-10 w-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center mr-3">
@@ -90,7 +85,6 @@ export default function CreateVirtualCard() {
                       Invitation Sent
                     </div>
                   </div>
-
                   <div className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
                     <div className="flex items-center">
                       <div className="h-10 w-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center mr-3">
@@ -106,7 +100,6 @@ export default function CreateVirtualCard() {
                     </div>
                   </div>
                 </div>
-                
                 <div className="bg-blue-50 rounded-md p-4 mb-6">
                   <div className="flex items-center mb-2">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -118,7 +111,6 @@ export default function CreateVirtualCard() {
                     All participants will be charged immediately to fund this virtual card. Once all have paid, the card will be created and ready to use for payment.
                   </p>
                 </div>
-                
                 <div className="mb-6">
                   <label htmlFor="card-name" className="label">Card Name (Optional)</label>
                   <input
@@ -128,7 +120,6 @@ export default function CreateVirtualCard() {
                     placeholder="e.g., La Toque Dinner"
                   />
                 </div>
-                
                 <div className="mb-6">
                   <label className="label">Card Settings</label>
                   <div className="space-y-3">
@@ -150,7 +141,6 @@ export default function CreateVirtualCard() {
                     </div>
                   </div>
                 </div>
-                
                 <div className="flex justify-between">
                   <Link href="/create-bill" className="btn bg-gray-200 text-gray-800 hover:bg-gray-300">
                     Back
@@ -161,7 +151,6 @@ export default function CreateVirtualCard() {
                 </div>
               </div>
             </div>
-            
             <div>
               <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                 <h2 className="text-xl font-semibold mb-4">Virtual Card Preview</h2>
@@ -218,7 +207,6 @@ export default function CreateVirtualCard() {
                   </div>
                 </div>
               </div>
-              
               <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                 <h3 className="font-medium mb-2">Secure & Convenient</h3>
                 <ul className="space-y-2 text-sm text-gray-600">

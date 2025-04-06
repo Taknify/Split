@@ -1,9 +1,6 @@
 "use client";
-
 import React from 'react';
 import Image from 'next/image';
-
-// Define testimonials array
 const testimonials = [
   {
     id: 1,
@@ -27,7 +24,6 @@ const testimonials = [
     text: "Our team uses SplitApp for client dinners and travel expenses. The receipt scanning feature is incredibly accurate, and the virtual cards integrate perfectly with our accounting software."
   }
 ];
-
 const StarRating = ({ rating }: { rating: number }) => {
   return (
     <div className="flex">
@@ -45,7 +41,6 @@ const StarRating = ({ rating }: { rating: number }) => {
     </div>
   );
 };
-
 const Testimonials = () => {
   return (
     <section className="py-16 md:py-24">
@@ -58,7 +53,6 @@ const Testimonials = () => {
             Don't just take our word for it — hear from some of our satisfied users
           </p>
         </div>
-
         <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((testimonial) => (
             <div key={testimonial.id} className="card hover:shadow-xl">
@@ -81,7 +75,6 @@ const Testimonials = () => {
             </div>
           ))}
         </div>
-
         <div className="mt-16 text-center">
           <div className="inline-flex items-center p-1 bg-gray-100 rounded-full">
             <div className="bg-white rounded-full px-6 py-2 shadow-sm">
@@ -96,5 +89,4 @@ const Testimonials = () => {
     </section>
   );
 };
-
 export default Testimonials;

@@ -1,12 +1,9 @@
 "use client";
-
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,8 +13,7 @@ const Header = () => {
               <span className="text-2xl font-bold text-primary">SplitApp</span>
             </Link>
           </div>
-          
-          {/* Desktop navigation */}
+          {}
           <nav className="hidden md:flex space-x-8">
             <Link href="/features" className="text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium">
               Features
@@ -29,7 +25,6 @@ const Header = () => {
               About
             </Link>
           </nav>
-          
           <div className="hidden md:flex items-center space-x-4">
             <Link href="/login" className="text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium">
               Login
@@ -38,8 +33,7 @@ const Header = () => {
               Sign Up Free
             </Link>
           </div>
-          
-          {/* Mobile menu button */}
+          {}
           <div className="md:hidden flex items-center">
             <button
               type="button"
@@ -60,8 +54,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-      
-      {/* Mobile menu */}
+      {}
       {isMenuOpen && (
         <div className="md:hidden">
           <div className="pt-2 pb-3 space-y-1 border-t">
@@ -86,5 +79,4 @@ const Header = () => {
     </header>
   );
 };
-
 export default Header;

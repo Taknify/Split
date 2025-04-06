@@ -3,7 +3,6 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Link from 'next/link';
 import Image from 'next/image';
-
 export default function CreateGroup() {
   return (
     <main>
@@ -14,7 +13,6 @@ export default function CreateGroup() {
             <h1 className="text-3xl font-bold mb-2">Create a New Group</h1>
             <p className="text-gray-600">Start by creating a group and adding members to split expenses with.</p>
           </div>
-
           <div className="bg-white rounded-lg shadow-md p-6 mb-8">
             <form>
               <div className="mb-6">
@@ -27,7 +25,6 @@ export default function CreateGroup() {
                   required
                 />
               </div>
-
               <div className="mb-6">
                 <label htmlFor="group-description" className="label">Description (Optional)</label>
                 <textarea
@@ -36,7 +33,6 @@ export default function CreateGroup() {
                   placeholder="Brief description of what this group is for"
                 />
               </div>
-
               <div className="mb-6">
                 <label className="label">Group Members</label>
                 <div className="p-4 border border-gray-300 rounded-md mb-2">
@@ -48,7 +44,6 @@ export default function CreateGroup() {
                     </div>
                     <span>You (Group Creator)</span>
                   </div>
-
                   <div className="border-t border-gray-200 pt-4">
                     <div className="flex items-center mb-4">
                       <input
@@ -72,7 +67,6 @@ export default function CreateGroup() {
                   <span>Members can be added after creating the group as well</span>
                 </div>
               </div>
-
               <div className="mb-6">
                 <label className="label">Group Settings</label>
                 <div className="space-y-3">
@@ -90,7 +84,6 @@ export default function CreateGroup() {
                   </div>
                 </div>
               </div>
-
               <div className="flex justify-between">
                 <Link href="/" className="btn bg-gray-200 text-gray-800 hover:bg-gray-300">
                   Cancel
@@ -101,7 +94,6 @@ export default function CreateGroup() {
               </div>
             </form>
           </div>
-
           <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
             <div className="flex items-start">
               <div className="flex-shrink-0 pt-0.5">

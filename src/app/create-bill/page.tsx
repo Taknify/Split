@@ -3,7 +3,6 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Link from 'next/link';
 import Image from 'next/image';
-
 export default function CreateBill() {
   return (
     <main>
@@ -14,7 +13,6 @@ export default function CreateBill() {
             <h1 className="text-3xl font-bold mb-2">Create a New Bill</h1>
             <p className="text-gray-600">Add a new expense to split with your group</p>
           </div>
-
           <div className="bg-white rounded-lg shadow-md p-6 mb-8">
             <form>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -36,7 +34,6 @@ export default function CreateBill() {
                   </select>
                 </div>
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <div>
                   <label htmlFor="amount" className="label">Total Amount</label>
@@ -74,7 +71,6 @@ export default function CreateBill() {
                   </select>
                 </div>
               </div>
-
               <div className="mb-6">
                 <label className="label">Receipt Image (Optional)</label>
                 <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center">
@@ -101,7 +97,6 @@ export default function CreateBill() {
                   </div>
                 </div>
               </div>
-
               <div className="mb-6">
                 <label className="label">Split Type</label>
                 <div className="flex flex-wrap gap-4">
@@ -123,7 +118,6 @@ export default function CreateBill() {
                   </div>
                 </div>
               </div>
-
               <div className="mb-6">
                 <label className="label">Participants</label>
                 <div className="space-y-3">
@@ -145,7 +139,6 @@ export default function CreateBill() {
                   </div>
                 </div>
               </div>
-
               <div className="mb-6">
                 <label htmlFor="notes" className="label">Notes (Optional)</label>
                 <textarea
@@ -154,7 +147,6 @@ export default function CreateBill() {
                   placeholder="Any additional details about this expense..."
                 />
               </div>
-
               <div className="flex justify-between">
                 <Link href="/" className="btn bg-gray-200 text-gray-800 hover:bg-gray-300">
                   Cancel
@@ -167,7 +159,6 @@ export default function CreateBill() {
               </div>
             </form>
           </div>
-
           <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
             <div className="flex">
               <div className="flex-shrink-0">

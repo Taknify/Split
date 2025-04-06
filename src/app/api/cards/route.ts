@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-
-// Initialize Stripe with secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2023-10-16',
 });
-
 export async function POST(req: NextRequest) {
   try {
     const { 
@@ -17,16 +14,13 @@ export async function POST(req: NextRequest) {
       exactAmount = true,
       metadata = {}
     } = await req.json();
-
     // Validate the request
     if (!amount || isNaN(amount) || amount <= 0) {
       return NextResponse.json({ error: 'Invalid amount' }, { status: 400 });
     }
-
     // Calculate expiration date
     const expirationDate = new Date();
     expirationDate.setHours(expirationDate.getHours() + expiration);
-
     // Create a virtual card
     const card = await stripe.issuing.cards.create({
       type: 'virtual',
@@ -50,7 +44,6 @@ export async function POST(req: NextRequest) {
         oneTimeUse: oneTimeUse ? 'true' : 'false'
       }
     });
-
     return NextResponse.json({
       id: card.id,
       last4: card.last4,
@@ -69,7 +62,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-
 export async function GET(req: NextRequest) {
   try {
     // This would normally get a specific card or list cards

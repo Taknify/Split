@@ -1,8 +1,6 @@
 import Link from 'next/link';
-
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  
   return (
     <footer className="bg-gray-900 text-white mt-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,5 +64,4 @@ const Footer = () => {
     </footer>
   );
 };
-
 export default Footer;
