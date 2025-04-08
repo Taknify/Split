@@ -1,128 +1,166 @@
-# SplitApp
+# SplitApp - Group Expense Management
 
-SplitApp is a Next.js application designed to simplify bill splitting and group expense management through virtual card creation. The app uses Stripe's PayFac system to charge individual users and combine those funds into a virtual card for seamless payment to merchants.
+A Next.js application for managing group expenses with virtual cards, built with Neo4j as the database backend.
 
-## Features
+## Project Overview
 
-- Create expense groups with friends, family, or colleagues
-- Add new bills and split them equally or custom amounts
-- Generate virtual cards funded by all participants
-- Track expenses and payments in one place
-- Secure payment processing via Stripe
-
-## Prerequisites
-
-Before you begin, ensure you have the following installed:
-- [Node.js](https://nodejs.org/) (v18 or newer)
-- [npm](https://www.npmjs.com/) (v9 or newer)
-- A code editor (e.g., VS Code, Sublime Text)
-- [Git](https://git-scm.com/)
+SplitApp simplifies bill splitting and group expense management through virtual card creation. The app uses Stripe's PayFac system to charge individual users and combine those funds into a virtual card for seamless payment to merchants.
 
 ## Installation
 
-Follow these steps to set up SplitApp on your local machine:
+### Prerequisites
 
-1. **Clone the repository**
+- Node.js 16.x or higher
+- Neo4j Database (local instance or cloud)
+- npm or yarn
 
-   ```bash
-   git clone https://github.com/yourusername/split-app.git
-   cd split-app
-   ```
+### Environment Variables
 
-2. **Install dependencies**
+Create a `.env.local` file in the root directory with the following variables:
 
+```
+# Neo4j Connection
+NEO4J_URI=bolt://localhost:7687  # Adjust to your Neo4j instance
+NEO4J_USERNAME=neo4j
+NEO4J_PASSWORD=yourpassword
+
+# NextAuth Secret
+NEXTAUTH_SECRET=your-nextauth-secret-key
+NEXTAUTH_URL=http://localhost:3000
+
+# Stripe API Keys (for payment processing)
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_PUBLISHABLE_KEY=pk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+
+# Other Configuration
+NODE_ENV=development
+```
+
+### Setup Instructions
+
+1. Clone the repository
+2. Install dependencies:
    ```bash
    npm install
    ```
-
-3. **Set up environment variables**
-
-   Create a `.env.local` file in the root directory of the project with the following variables:
-
+3. Set up and initialize Neo4j database:
+   ```bash
+   npm run setup-db  # Create Neo4j database if needed
+   npm run seed-db   # Seed test data (2 users, 1 group, and a bill)
    ```
-   # Stripe API Keys (Test Mode)
-   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_publishable_key
-   STRIPE_SECRET_KEY=sk_test_your_secret_key
-   STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
-   ```
-
-   Note: Replace the placeholder values with your actual Stripe API keys. For development purposes, you can use Stripe's test keys.
-
-4. **Start the development server**
-
+4. Start the development server:
    ```bash
    npm run dev
    ```
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-   The application will be available at [http://localhost:3000](http://localhost:3000).
+## Neo4j Setup
 
-## Stripe Integration Setup
+This application requires a Neo4j database. Follow these steps to set it up:
 
-To fully utilize the virtual card creation functionality, you'll need to:
+1. **Install Neo4j**:
+   - Visit [Neo4j Download Center](https://neo4j.com/download/) and download Neo4j Desktop
+   - Or use Docker: `docker run --name neo4j -p7474:7474 -p7687:7687 -e NEO4J_AUTH=neo4j/password neo4j`
 
-1. Create a [Stripe](https://stripe.com) account
-2. Enable Stripe Connect in your Stripe Dashboard
-3. Set up Stripe Issuing for virtual card creation
-4. Configure webhooks for payment status updates
+2. **Configure Neo4j**:
+   - Default credentials: username `neo4j`, password `password` (change in `.env` if different)
+   - Make sure the database is running and accessible at `bolt://localhost:7687`
 
-## Project Structure
+3. **Database Schema**:
+   The application uses a graph data model with the following main entities:
+   - Users (with authentication information)
+   - Groups (collection of users)
+   - Expenses (bills to be split)
+   - Shares (individual portions of expenses)
+   - Virtual Cards (for payment to merchants)
+
+## Features
+
+- **User Authentication**: Register, login, and protected routes
+- **Group Management**: Create and join expense groups
+- **Expense Tracking**: Record and track expenses within groups
+- **Virtual Cards**: Create group virtual cards for shared expenses
+- **Expense Splitting**: Automatically split expenses among group members
+
+## Test Credentials
+
+The seed script creates the following test accounts:
+
+- **John (Admin)**:
+  - Email: john@example.com
+  - Password: password123
+
+- **Jane (Regular User)**:
+  - Email: jane@example.com
+  - Password: password123
+
+Both users are in a "Dinner Group" with a shared expense of $60.
+
+## Technical Architecture
+
+### Frontend Architecture
+
+- **React**: Frontend UI library
+- **Next.js**: React framework with App Router
+- **Tailwind CSS**: Utility-first CSS framework
+- **TypeScript**: Type-safe JavaScript
+
+### Directory Structure
 
 ```
 /
 ├── public/                # Static assets
-│   └── images/            # Image files
 ├── src/
 │   ├── app/               # Next.js App Router pages
-│   │   ├── page.tsx       # Homepage
-│   │   ├── create-group/  # Group creation page
-│   │   ├── create-bill/   # Bill creation page
-│   │   └── create-virtual-card/ # Virtual card creation
+│   │   ├── api/           # API routes
+│   │   ├── auth/          # Authentication pages
+│   │   └── ...            # Other pages
 │   ├── components/        # Reusable UI components
-│   │   ├── Header.tsx     # Header component
-│   │   ├── Footer.tsx     # Footer component
-│   │   ├── Hero.tsx       # Hero section component
-│   │   └── ...            # Other components
-│   ├── lib/               # Utility functions and API helpers
-│   │   ├── stripe/        # Stripe integration code
-│   │   └── utils.ts       # General utility functions
-│   └── data/              # Sample data for development
+│   ├── lib/               # Utility functions 
+│   │   ├── auth/          # Authentication logic
+│   │   ├── stripe/        # Stripe integration
+│   │   └── ...            # Other utilities
+│   ├── providers/         # React context providers
+│   └── scripts/           # Database initialization scripts
 └── ...                    # Config files
 ```
 
-## Available Scripts
+## Stripe Integration
 
-- `npm run dev` - Start the development server
-- `npm run build` - Build the application for production
-- `npm start` - Start the production server
-- `npm run lint` - Lint the codebase
+The application integrates with Stripe for payment processing and virtual card issuance using:
 
-## Testing Stripe Integration
+1. **Stripe Connect**: Platform model for handling multi-party payments
+2. **Stripe Treasury**: Financial account to hold pooled funds (optional)
+3. **Stripe Issuing**: Virtual card creation and management
 
-For testing the Stripe integration locally:
+### Payment Flow
 
-1. Install the [Stripe CLI](https://stripe.com/docs/stripe-cli)
-2. Forward webhooks to your local server:
-   ```bash
-   stripe listen --forward-to http://localhost:3000/api/webhooks/stripe
-   ```
-3. Use Stripe's test card numbers for simulating payments:
-   - `4242 4242 4242 4242` - Successful payment
-   - `4000 0000 0000 9995` - Declined payment
+1. **Bill Creation**: A user creates a bill and invites group members
+2. **Authorization**: Each user's payment method is authorized
+3. **Fund Pooling**: Funds are collected or authorized
+4. **Virtual Card Creation**: A virtual card is created with the pooled amount
+5. **Payment to Merchant**: The virtual card is used to pay the merchant
 
-## Contributing
+## Development Commands
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+- `npm run dev`: Start development server
+- `npm run build`: Build for production
+- `npm run start`: Start production server
+- `npm run lint`: Run ESLint
+- `npm run seed-db`: Initialize database with test data
 
-## License
+## Code Style Guidelines
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+- **Imports**: Group imports by type (React, Next.js, third-party, local)
+- **Typing**: Use TypeScript interfaces for component props
+- **Component Structure**: Use functional components with hooks
+- **Error Handling**: Use try/catch blocks for async operations
+- **CSS**: Use Tailwind CSS classes for styling
 
-## Acknowledgments
+## Resources
 
-- [Next.js](https://nextjs.org/) - The React framework
-- [Stripe](https://stripe.com/) - Payment processing platform
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [Stripe API Documentation](https://stripe.com/docs/api)
+- [Neo4j Documentation](https://neo4j.com/docs/)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)

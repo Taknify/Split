@@ -8,7 +8,8 @@ const steps = [
     description: "Invite friends to your expense group in seconds.",
     gradient: "from-red-500 via-pink-500 to-purple-500",
     bgGradient: "from-red-50 to-white",
-    lineGradient: "from-red-500 to-purple-500"
+    lineGradient: "from-red-500 to-purple-500",
+    image: "/images/create-group.svg"
   },
   {
     id: 2,
@@ -16,7 +17,8 @@ const steps = [
     description: "Enter a bill amount and choose how to split it.",
     gradient: "from-blue-500 via-cyan-500 to-teal-500",
     bgGradient: "from-blue-50 to-white",
-    lineGradient: "from-blue-500 to-teal-500"
+    lineGradient: "from-blue-500 to-teal-500",
+    image: "/images/payment-illustration.svg"
   },
   {
     id: 3,
@@ -24,7 +26,8 @@ const steps = [
     description: "Each person is charged through their preferred payment method.",
     gradient: "from-green-500 via-emerald-500 to-lime-500",
     bgGradient: "from-green-50 to-white",
-    lineGradient: "from-green-500 to-lime-500"
+    lineGradient: "from-green-500 to-lime-500",
+    image: "/images/card-stack.png"
   },
   {
     id: 4,
@@ -32,7 +35,8 @@ const steps = [
     description: "Use the virtual card for immediate payment anywhere.",
     gradient: "from-yellow-500 via-amber-500 to-orange-500",
     bgGradient: "from-yellow-50 to-white",
-    lineGradient: "from-yellow-500 to-orange-500"
+    lineGradient: "from-yellow-500 to-orange-500",
+    image: "/images/virtual-card.png"
   }
 ];
 const HowItWorks = () => {

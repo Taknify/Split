@@ -1,123 +1,109 @@
-// Neo4j Cypher script to create a graph representation of the Next.js codebase
-// This will model files, components, imports, and their relationships
+// Neo4j Cypher script for creating our graph data model for SplitApp
 
 // Clear existing data (be careful with this in production!)
 MATCH (n) DETACH DELETE n;
 
-// Create File nodes for different file types
-// App structure files
-CREATE (layout:File {name: 'layout.tsx', path: '/src/app/layout.tsx', type: 'layout'})
-CREATE (globals:File {name: 'globals.css', path: '/src/app/globals.css', type: 'stylesheet'})
-CREATE (homepage:File {name: 'page.tsx', path: '/src/app/page.tsx', type: 'page'})
+// Create User nodes
+CREATE (admin:User {
+  id: "user-1",
+  name: "Admin User",
+  email: "adharbhattarai@gmail.com",
+  password: "$2a$10$hACwQ5/HQI6FhbIISOUVeusy3sKyUDhSq36fF5d/54aULe9l0lzXO", // Hashed "password"
+  isAdmin: true,
+  createdAt: datetime("2025-04-01T00:00:00Z")
+})
 
-// Component files
-CREATE (header:Component {name: 'Header', path: '/src/components/Header.tsx', type: 'component'})
-CREATE (hero:Component {name: 'Hero', path: '/src/components/Hero.tsx', type: 'component'})
-CREATE (features:Component {name: 'Features', path: '/src/components/Features.tsx', type: 'component'})
-CREATE (howItWorks:Component {name: 'HowItWorks', path: '/src/components/HowItWorks.tsx', type: 'component'})
-CREATE (testimonials:Component {name: 'Testimonials', path: '/src/components/Testimonials.tsx', type: 'component'})
-CREATE (cta:Component {name: 'CTA', path: '/src/components/CTA.tsx', type: 'component'})
-CREATE (footer:Component {name: 'Footer', path: '/src/components/Footer.tsx', type: 'component'})
+CREATE (regularUser:User {
+  id: "user-2",
+  name: "Regular User",
+  email: "user@example.com",
+  password: "$2a$10$hACwQ5/HQI6FhbIISOUVeusy3sKyUDhSq36fF5d/54aULe9l0lzXO", // Hashed "password"
+  isAdmin: false,
+  createdAt: datetime("2025-04-02T00:00:00Z")
+})
 
-// API Routes
-CREATE (cardsApi:File {name: 'route.ts', path: '/src/app/api/cards/route.ts', type: 'api'})
-CREATE (paymentIntentsApi:File {name: 'route.ts', path: '/src/app/api/payment/intents/route.ts', type: 'api'})
-CREATE (stripeWebhookApi:File {name: 'route.ts', path: '/src/app/api/webhooks/stripe/route.ts', type: 'api'})
+// Create Group nodes
+CREATE (teamLunch:Group {
+  id: "group-1",
+  name: "Weekly Team Lunch",
+  description: "Our weekly team lunch expense group",
+  createdAt: datetime("2025-04-03T00:00:00Z")
+})
 
-// Page files
-CREATE (createBillPage:File {name: 'page.tsx', path: '/src/app/create-bill/page.tsx', type: 'page'})
-CREATE (createGroupPage:File {name: 'page.tsx', path: '/src/app/create-group/page.tsx', type: 'page'})
-CREATE (createVirtualCardPage:File {name: 'page.tsx', path: '/src/app/create-virtual-card/page.tsx', type: 'page'})
-CREATE (virtualCardDetailsPage:File {name: 'page.tsx', path: '/src/app/virtual-card-details/page.tsx', type: 'page'})
+CREATE (dinnerGroup:Group {
+  id: "group-2",
+  name: "Dinner at Restaurant",
+  description: "Fancy dinner at the new downtown restaurant",
+  createdAt: datetime("2025-04-07T00:00:00Z"),
+  status: "ongoing"
+})
 
-// Data files
-CREATE (sampleData:File {name: 'sample-data.json', path: '/src/data/sample-data.json', type: 'data'})
+// Create Expense node
+CREATE (lunchExpense:Expense {
+  id: "expense-1",
+  description: "Team Lunch at Restaurant",
+  amount: 100.00,
+  currency: "USD",
+  date: datetime("2025-04-05T12:30:00Z")
+})
 
-// Create directories as nodes
-CREATE (app:Directory {name: 'app', path: '/src/app'})
-CREATE (api:Directory {name: 'api', path: '/src/app/api'})
-CREATE (components:Directory {name: 'components', path: '/src/components'})
-CREATE (data:Directory {name: 'data', path: '/src/data'})
-CREATE (lib:Directory {name: 'lib', path: '/src/lib'})
-CREATE (stripe:Directory {name: 'stripe', path: '/src/lib/stripe'})
+// Create relationships between Users and Groups
+CREATE (admin)-[:MEMBER_OF {role: "admin", joinedAt: datetime("2025-04-03T00:00:00Z")}]->(teamLunch)
+CREATE (regularUser)-[:MEMBER_OF {role: "member", joinedAt: datetime("2025-04-03T00:00:00Z")}]->(teamLunch)
 
-// Create relationships for directory structure
-CREATE (app)-[:CONTAINS]->(layout)
-CREATE (app)-[:CONTAINS]->(globals)
-CREATE (app)-[:CONTAINS]->(homepage)
-CREATE (app)-[:CONTAINS]->(api)
-CREATE (api)-[:CONTAINS]->(cardsApi)
-CREATE (api)-[:CONTAINS]->(paymentIntentsApi)
-CREATE (api)-[:CONTAINS]->(stripeWebhookApi)
-CREATE (app)-[:CONTAINS]->(createBillPage)
-CREATE (app)-[:CONTAINS]->(createGroupPage)
-CREATE (app)-[:CONTAINS]->(createVirtualCardPage)
-CREATE (app)-[:CONTAINS]->(virtualCardDetailsPage)
-CREATE (components)-[:CONTAINS]->(header)
-CREATE (components)-[:CONTAINS]->(hero)
-CREATE (components)-[:CONTAINS]->(features)
-CREATE (components)-[:CONTAINS]->(howItWorks)
-CREATE (components)-[:CONTAINS]->(testimonials)
-CREATE (components)-[:CONTAINS]->(cta)
-CREATE (components)-[:CONTAINS]->(footer)
-CREATE (data)-[:CONTAINS]->(sampleData)
-CREATE (lib)-[:CONTAINS]->(stripe)
+// Add both users to the dinner group
+CREATE (admin)-[:MEMBER_OF {role: "member", joinedAt: datetime("2025-04-07T00:00:00Z")}]->(dinnerGroup)
+CREATE (regularUser)-[:MEMBER_OF {role: "admin", joinedAt: datetime("2025-04-07T00:00:00Z")}]->(dinnerGroup)
 
-// Create relationships for imports
-CREATE (homepage)-[:IMPORTS]->(header)
-CREATE (homepage)-[:IMPORTS]->(hero)
-CREATE (homepage)-[:IMPORTS]->(features)
-CREATE (homepage)-[:IMPORTS]->(howItWorks)
-CREATE (homepage)-[:IMPORTS]->(testimonials)
-CREATE (homepage)-[:IMPORTS]->(cta)
-CREATE (homepage)-[:IMPORTS]->(footer)
+// Create relationship between Admin and Expense (Admin paid)
+CREATE (admin)-[:PAID {date: datetime("2025-04-05T12:35:00Z")}]->(lunchExpense)
 
-// Create semantic relationships based on function
-CREATE (header)-[:PART_OF {section: 'navigation'}]->(homepage)
-CREATE (hero)-[:PART_OF {section: 'main'}]->(homepage)
-CREATE (features)-[:PART_OF {section: 'main'}]->(homepage)
-CREATE (howItWorks)-[:PART_OF {section: 'main'}]->(homepage)
-CREATE (testimonials)-[:PART_OF {section: 'social_proof'}]->(homepage)
-CREATE (cta)-[:PART_OF {section: 'conversion'}]->(homepage)
-CREATE (footer)-[:PART_OF {section: 'navigation'}]->(homepage)
+// Create relationship between Expense and Group
+CREATE (lunchExpense)-[:BELONGS_TO]->(teamLunch)
 
-// Create API relationships
-CREATE (cardsApi)-[:HANDLES {action: 'create_card', method: 'POST'}]->(createVirtualCardPage)
-CREATE (cardsApi)-[:HANDLES {action: 'get_cards', method: 'GET'}]->(virtualCardDetailsPage)
-CREATE (paymentIntentsApi)-[:HANDLES {action: 'create_payment_intent', method: 'POST'}]->(createBillPage)
-CREATE (stripeWebhookApi)-[:PROCESSES {event: 'payment_success'}]->(paymentIntentsApi)
+// Create Shares for the expense (showing the 50/50 split)
+CREATE (adminShare:Share {
+  id: "share-1",
+  amount: 50.00,
+  percentage: 50,
+  status: "paid"
+})
 
-// Add specific dependency relationships (would be more in a real codebase)
-CREATE (cardsApi)-[:DEPENDS_ON {type: 'external'}]->(:ExternalDependency {name: 'Stripe', version: '2023-10-16'})
+CREATE (regularUserShare:Share {
+  id: "share-2",
+  amount: 50.00,
+  percentage: 50,
+  status: "pending"
+})
 
-// Add tags for better categorization and context understanding
-MATCH (n:File) WHERE n.path CONTAINS 'api' SET n:API
-MATCH (n:File) WHERE n.type = 'page' SET n:Page
-MATCH (n:Component) SET n:React, n:UI
+// Connect Shares to Expense
+CREATE (lunchExpense)-[:HAS_SHARE]->(adminShare)
+CREATE (lunchExpense)-[:HAS_SHARE]->(regularUserShare)
 
-// Add AST-like relationships for component structure (simplified)
-// Header component has UI elements
-CREATE (headerTitle:UIElement {name: 'title', type: 'text', value: 'SplitApp'})
-CREATE (headerNav:UIElement {name: 'navigation', type: 'menu'})
-CREATE (headerMobileMenu:UIElement {name: 'mobileMenu', type: 'menu', conditional: 'isMenuOpen'})
-CREATE (header)-[:CONTAINS_ELEMENT]->(headerTitle)
-CREATE (header)-[:CONTAINS_ELEMENT]->(headerNav)
-CREATE (header)-[:CONTAINS_ELEMENT]->(headerMobileMenu)
-CREATE (headerNav)-[:HAS_STATE {name: 'isMenuOpen', type: 'boolean', default: 'false'}]->(header)
+// Connect Shares to Users
+CREATE (adminShare)-[:ASSIGNED_TO]->(admin)
+CREATE (regularUserShare)-[:ASSIGNED_TO]->(regularUser)
 
-// Query examples (for reference):
+// Create Virtual Card
+CREATE (teamCard:VirtualCard {
+  id: "card-1",
+  name: "Team Lunch Card",
+  lastFour: "5555",
+  expiryMonth: 4,
+  expiryYear: 26,
+  limit: 100.00,
+  spent: 50.00,
+  active: true,
+  createdAt: datetime("2025-04-04T00:00:00Z")
+})
 
-// 1. Find all files that the homepage imports
-// MATCH (p:File {name: 'page.tsx', path: '/src/app/page.tsx'})-[:IMPORTS]->(c) RETURN p, c
+// Connect Card to Group
+CREATE (teamLunch)-[:HAS_CARD]->(teamCard)
 
-// 2. Get the entire component tree of the homepage
-// MATCH path = (p:File {name: 'page.tsx', path: '/src/app/page.tsx'})-[:IMPORTS|PART_OF*]->(c) RETURN path
+// Verify our data model
+MATCH (n) RETURN n LIMIT 25;
 
-// 3. Find all API endpoints that handle POST requests
-// MATCH (a:API)-[r:HANDLES]->(p) WHERE r.method = 'POST' RETURN a, r, p
-
-// 4. Find all components with UI elements
-// MATCH (c:Component)-[:CONTAINS_ELEMENT]->(e:UIElement) RETURN c, e
-
-// 5. Find components with state
-// MATCH (e)-[:HAS_STATE]->(c:Component) RETURN c, e
+// Query to show the expense split between users
+MATCH (u:User)<-[:ASSIGNED_TO]-(s:Share)<-[:HAS_SHARE]-(e:Expense)-[:BELONGS_TO]->(g:Group)
+WHERE g.name = "Weekly Team Lunch"
+RETURN u.name AS User, s.amount AS Share, (s.status = "paid") AS IsPaid, e.description AS Expense, e.amount AS TotalAmount;

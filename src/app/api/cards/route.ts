@@ -1,87 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Stripe from 'stripe';
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: '2023-10-16',
-});
-export async function POST(req: NextRequest) {
+import { executeQuery } from '@/lib/neo4j';
+import { auth } from '@/lib/auth/auth';
+
+// Get all virtual cards for the current user
+export async function GET(request: NextRequest) {
   try {
-    const { 
-      amount, 
-      cardName, 
-      expiration = 24, // Default 24 hours expiration
-      merchantLock = null, 
-      oneTimeUse = true,
-      exactAmount = true,
-      metadata = {}
-    } = await req.json();
-    // Validate the request
-    if (!amount || isNaN(amount) || amount <= 0) {
-      return NextResponse.json({ error: 'Invalid amount' }, { status: 400 });
+    // Get current user from session
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { message: 'Unauthorized' },
+        { status: 401 }
+      );
     }
-    // Calculate expiration date
-    const expirationDate = new Date();
-    expirationDate.setHours(expirationDate.getHours() + expiration);
-    // Create a virtual card
-    const card = await stripe.issuing.cards.create({
-      type: 'virtual',
-      currency: 'usd',
-      status: 'active',
-      cardholder: 'acct_test_cardholder', // In production, this would be a real cardholder ID
-      spending_controls: {
-        spending_limits: exactAmount ? [
-          {
-            amount: Math.round(amount * 100), // Convert to cents
-            interval: 'per_authorization'
-          }
-        ] : undefined,
-        allowed_categories: merchantLock ? [merchantLock] : undefined,
-        blocked_categories: [],
-        spending_limit_currency: 'usd'
-      },
-      metadata: {
-        ...metadata,
-        cardName: cardName || 'SplitApp Virtual Card',
-        oneTimeUse: oneTimeUse ? 'true' : 'false'
-      }
-    });
-    return NextResponse.json({
-      id: card.id,
-      last4: card.last4,
-      status: card.status,
-      // In a real implementation, you'd need to fetch the card details using the Stripe API
-      // This is simplified for demonstration purposes
-      card_details: {
-        number: '4242XXXXXXXX4242', // Placeholder
-        exp_month: 12,
-        exp_year: 25,
-        cvc: '123'
-      }
-    });
-  } catch (error: any) {
-    console.error('Virtual card creation error:', error.message);
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-}
-export async function GET(req: NextRequest) {
-  try {
-    // This would normally get a specific card or list cards
-    // Simplified for demonstration purposes
-    return NextResponse.json({
-      cards: [
-        {
-          id: 'card_1234',
-          last4: '4242',
-          status: 'active',
-          created: new Date().toISOString(),
-          metadata: {
-            cardName: 'Sample Virtual Card',
-            oneTimeUse: 'true'
-          }
-        }
-      ]
-    });
-  } catch (error: any) {
-    console.error('Error fetching cards:', error.message);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+
+    const userId = session.user.id;
+
+    // Query Neo4j for all virtual cards related to the user's groups
+    const cypher = `
+      MATCH (u:User {id: $userId})-[:MEMBER_OF]->(g:Group)-[:HAS_CARD]->(c:VirtualCard)
+      OPTIONAL MATCH (g)<-[:MEMBER_OF]-(member:User)
+      OPTIONAL MATCH (member)-[:FUNDED]->(f:Funding)-[:FUNDS]->(c)
+      WITH c, g, count(distinct member) as totalMembers, count(distinct f) as fundedMembers,
+           sum(f.amount) as totalFunded, c.initialBalance - sum(coalesce(c.spent, 0)) as balance
+      RETURN c.id as id, c.name as name, c.number as number, 
+             toString(c.expiryMonth) + '/' + toString(c.expiryYear) as expiry,
+             c.initialBalance as initialBalance, coalesce(c.spent, 0) as spent,
+             g.id as groupId, g.name as groupName,
+             totalMembers, fundedMembers, totalFunded, balance
+    `;
+
+    const cards = await executeQuery(cypher, { userId });
+
+    return NextResponse.json(cards);
+  } catch (error) {
+    console.error('Error fetching virtual cards:', error);
+    return NextResponse.json(
+      { message: 'Internal server error', error: (error as Error).message },
+      { status: 500 }
+    );
   }
 }

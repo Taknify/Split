@@ -99,16 +99,16 @@ const Hero = () => {
         {}
         <div className="flex justify-center space-x-4">
           <Link 
-            href="/signup" 
+            href="/auth/register" 
             className="bg-pink-500 text-white px-6 py-3 rounded-full hover:bg-pink-600 transition-colors"
           >
-            Get Started — It's Free
+            Sign Up — It's Free
           </Link>
           <Link 
-            href="#how-it-works" 
+            href="/auth/login" 
             className="border-2 border-white/60 text-white px-6 py-3 rounded-full hover:bg-white/10 transition-colors"
           >
-            See How It Works
+            Sign In
           </Link>
         </div>
       </div>

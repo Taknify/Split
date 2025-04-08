@@ -1,9 +1,40 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
 export default function CreateVirtualCard() {
+  const router = useRouter();
+  
+  // State for user data
+  const [userData, setUserData] = useState({
+    name: "Regular User",
+    email: "user@example.com"
+  });
+  
+  // Get URL parameters
+  useEffect(() => {
+    // Check URL for user info
+    const params = new URLSearchParams(window.location.search);
+    const userEmail = params.get('email');
+    
+    if (userEmail === 'adharbhattarai@gmail.com') {
+      setUserData({
+        name: "Admin User",
+        email: "adharbhattarai@gmail.com"
+      });
+    } else if (userEmail) {
+      setUserData({
+        name: "Regular User",
+        email: userEmail
+      });
+    }
+  }, []);
+  
   return (
     <main>
       <Header />
@@ -20,37 +51,35 @@ export default function CreateVirtualCard() {
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Expense:</span>
-                    <span className="font-medium">Dinner at La Toque</span>
+                    <span className="font-medium">Dinner at Restaurant</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Group:</span>
-                    <span className="font-medium">Weekend Getaway</span>
+                    <span className="font-medium">Dinner at Restaurant</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Date:</span>
-                    <span className="font-medium">Nov 12, 2023</span>
+                    <span className="font-medium">Apr 7, 2025</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Total Amount:</span>
-                    <span className="font-medium">$420.50</span>
+                    <span className="font-medium">$100.00</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Split Type:</span>
-                    <span className="font-medium">Equal Split (4 people)</span>
+                    <span className="font-medium">Equal Split (2 people)</span>
                   </div>
                 </div>
                 <h3 className="font-medium mb-2">Participants</h3>
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
                     <div className="flex items-center">
-                      <div className="h-10 w-10 bg-primary text-white rounded-full flex items-center justify-center mr-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
+                      <div className="h-10 w-10 bg-indigo-600 text-white rounded-full flex items-center justify-center mr-3">
+                        <span className="text-sm font-medium">AU</span>
                       </div>
                       <div>
-                        <div className="font-medium">You (Alex Johnson)</div>
-                        <div className="text-sm text-gray-500">$105.13</div>
+                        <div className="font-medium">Admin User</div>
+                        <div className="text-sm text-gray-500">$50.00</div>
                       </div>
                     </div>
                     <div className="bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full">
@@ -60,43 +89,15 @@ export default function CreateVirtualCard() {
                   <div className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
                     <div className="flex items-center">
                       <div className="h-10 w-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center mr-3">
-                        <span className="text-sm font-medium">JS</span>
+                        <span className="text-sm font-medium">RU</span>
                       </div>
                       <div>
-                        <div className="font-medium">Jamie Smith</div>
-                        <div className="text-sm text-gray-500">$105.13</div>
-                      </div>
-                    </div>
-                    <div className="bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full">
-                      Card on File
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
-                    <div className="flex items-center">
-                      <div className="h-10 w-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center mr-3">
-                        <span className="text-sm font-medium">TW</span>
-                      </div>
-                      <div>
-                        <div className="font-medium">Taylor Wilson</div>
-                        <div className="text-sm text-gray-500">$105.12</div>
+                        <div className="font-medium">Regular User</div>
+                        <div className="text-sm text-gray-500">$50.00</div>
                       </div>
                     </div>
                     <div className="bg-yellow-100 text-yellow-800 text-xs font-medium px-3 py-1 rounded-full">
-                      Invitation Sent
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
-                    <div className="flex items-center">
-                      <div className="h-10 w-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center mr-3">
-                        <span className="text-sm font-medium">MC</span>
-                      </div>
-                      <div>
-                        <div className="font-medium">Morgan Chen</div>
-                        <div className="text-sm text-gray-500">$105.12</div>
-                      </div>
-                    </div>
-                    <div className="bg-yellow-100 text-yellow-800 text-xs font-medium px-3 py-1 rounded-full">
-                      Invitation Sent
+                      Payment Pending
                     </div>
                   </div>
                 </div>
@@ -112,41 +113,104 @@ export default function CreateVirtualCard() {
                   </p>
                 </div>
                 <div className="mb-6">
-                  <label htmlFor="card-name" className="label">Card Name (Optional)</label>
+                  <label htmlFor="card-name" className="block text-sm font-medium text-gray-700 mb-1">Card Name (Optional)</label>
                   <input
                     type="text"
                     id="card-name"
-                    className="input"
-                    placeholder="e.g., La Toque Dinner"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="e.g., Dinner at Restaurant Card"
+                    defaultValue="Dinner at Restaurant Card"
                   />
                 </div>
                 <div className="mb-6">
-                  <label className="label">Card Settings</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Card Settings</label>
                   <div className="space-y-3">
                     <div className="flex items-center">
-                      <input type="checkbox" id="one-time-use" className="h-4 w-4 mr-2" checked />
-                      <label htmlFor="one-time-use">One-time use card (recommended)</label>
+                      <input type="checkbox" id="one-time-use" className="h-4 w-4 mr-2 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" defaultChecked />
+                      <label htmlFor="one-time-use" className="text-sm text-gray-700">One-time use card (recommended)</label>
                     </div>
                     <div className="flex items-center">
-                      <input type="checkbox" id="merchant-lock" className="h-4 w-4 mr-2" checked />
-                      <label htmlFor="merchant-lock">Lock to merchant "La Toque"</label>
+                      <input type="checkbox" id="merchant-lock" className="h-4 w-4 mr-2 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" defaultChecked />
+                      <label htmlFor="merchant-lock" className="text-sm text-gray-700">Lock to merchant "Restaurant"</label>
                     </div>
                     <div className="flex items-center">
-                      <input type="checkbox" id="exact-amount" className="h-4 w-4 mr-2" checked />
-                      <label htmlFor="exact-amount">Restrict to exact amount ($420.50)</label>
+                      <input type="checkbox" id="exact-amount" className="h-4 w-4 mr-2 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" defaultChecked />
+                      <label htmlFor="exact-amount" className="text-sm text-gray-700">Restrict to exact amount ($100.00)</label>
                     </div>
                     <div className="flex items-center">
-                      <input type="checkbox" id="expiration" className="h-4 w-4 mr-2" checked />
-                      <label htmlFor="expiration">Set expiration (24 hours)</label>
+                      <input type="checkbox" id="expiration" className="h-4 w-4 mr-2 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" defaultChecked />
+                      <label htmlFor="expiration" className="text-sm text-gray-700">Set expiration (24 hours)</label>
                     </div>
                   </div>
                 </div>
+                
+                {/* Payment Method Selection */}
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Select Payment Method</label>
+                  <div className="space-y-2">
+                    <div className="flex items-center p-3 border rounded-md bg-gray-50 hover:bg-gray-100">
+                      <input 
+                        type="radio" 
+                        id="pm_1" 
+                        name="paymentMethod" 
+                        defaultChecked
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                      />
+                      <label htmlFor="pm_1" className="ml-3 flex flex-1 items-center justify-between cursor-pointer">
+                        <div className="flex items-center">
+                          <div className="flex items-center justify-center h-8 w-12 bg-gray-100 rounded mr-2">
+                            <span className="text-blue-600 font-bold text-xs">VISA</span>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-gray-900">Personal Visa</p>
+                            <p className="text-xs text-gray-500">•••• 4242 | Exp: 04/25</p>
+                          </div>
+                        </div>
+                        <span className="text-xs text-gray-500">Default</span>
+                      </label>
+                    </div>
+                    
+                    <div className="flex items-center p-3 border rounded-md bg-gray-50 hover:bg-gray-100">
+                      <input 
+                        type="radio" 
+                        id="pm_2" 
+                        name="paymentMethod" 
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                      />
+                      <label htmlFor="pm_2" className="ml-3 flex flex-1 items-center justify-between cursor-pointer">
+                        <div className="flex items-center">
+                          <div className="flex items-center justify-center h-8 w-12 bg-gray-100 rounded mr-2">
+                            <span className="text-red-600 font-bold text-xs">MC</span>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-gray-900">Work Mastercard</p>
+                            <p className="text-xs text-gray-500">•••• 5555 | Exp: 05/26</p>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                    
+                    <button className="mt-2 flex items-center text-sm text-indigo-600 hover:text-indigo-800">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                      Add Payment Method
+                    </button>
+                  </div>
+                </div>
+                
                 <div className="flex justify-between">
-                  <Link href="/create-bill" className="btn bg-gray-200 text-gray-800 hover:bg-gray-300">
-                    Back
+                  <Link 
+                    href="/dashboard" 
+                    className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors"
+                  >
+                    Cancel
                   </Link>
-                  <Link href="/virtual-card-details" className="btn btn-primary">
-                    Create Virtual Card
+                  <Link 
+                    href="/virtual-card-details" 
+                    className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+                  >
+                    Fund & Create Virtual Card
                   </Link>
                 </div>
               </div>
@@ -182,7 +246,7 @@ export default function CreateVirtualCard() {
                     </div>
                     <div>
                       <p className="text-xs opacity-70 mb-1">AMOUNT</p>
-                      <p className="font-medium">$420.50</p>
+                      <p className="font-medium">$100.00</p>
                     </div>
                   </div>
                 </div>
@@ -194,15 +258,15 @@ export default function CreateVirtualCard() {
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Total Card Amount:</span>
-                      <span className="font-medium">$420.50</span>
+                      <span className="font-medium">$100.00</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Participant Count:</span>
-                      <span className="font-medium">4</span>
+                      <span className="font-medium">2</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Status:</span>
-                      <span className="font-medium text-yellow-600">Awaiting 2 Payments</span>
+                      <span className="font-medium text-yellow-600">Awaiting 1 Payment</span>
                     </div>
                   </div>
                 </div>

@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: '2023-10-16', // Use the latest API version
-});
+import stripe from '../../../../lib/stripe/stripeClient';
+import { processWebhookEvent } from '../../../../lib/stripe/webhookHandlers';
+
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET as string;
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.text();
     const signature = req.headers.get('stripe-signature') as string;
+    
     // Verify the webhook signature
     let event: Stripe.Event;
     try {
@@ -16,23 +18,14 @@ export async function POST(req: NextRequest) {
       console.error(`Webhook signature verification failed: ${err.message}`);
       return NextResponse.json({ error: 'Webhook signature verification failed' }, { status: 400 });
     }
-    // Handle specific webhook events
-    switch (event.type) {
-      case 'payment_intent.succeeded':
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
-
-        break;
-      case 'charge.succeeded':
-        const charge = event.data.object as Stripe.Charge;
-
-        break;
-      case 'issuing_authorization.request':
-        const authorization = event.data.object as any; // Using any for now until proper typing is added
-
-        break;
-      // Add more event handlers as needed
-      default:
-    }
+    
+    // Process the webhook event
+    const context = {
+      // Add any services or context needed by handlers
+    };
+    
+    await processWebhookEvent(event, context);
+    
     return NextResponse.json({ received: true });
   } catch (error: any) {
     console.error(`Webhook error: ${error.message}`);

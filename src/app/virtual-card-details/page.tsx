@@ -1,9 +1,54 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
 export default function VirtualCardDetails() {
+  const router = useRouter();
+  
+  // State for user data
+  const [userData, setUserData] = useState({
+    name: "Regular User",
+    email: "user@example.com"
+  });
+  
+  // State for group data
+  const [groupData, setGroupData] = useState({
+    name: "Dinner at Restaurant",
+    amount: 100.00
+  });
+  
+  // Get URL parameters
+  useEffect(() => {
+    // Check URL for user info
+    const params = new URLSearchParams(window.location.search);
+    const userEmail = params.get('email');
+    const groupName = params.get('group');
+    
+    if (userEmail === 'adharbhattarai@gmail.com') {
+      setUserData({
+        name: "Admin User",
+        email: "adharbhattarai@gmail.com"
+      });
+    } else if (userEmail) {
+      setUserData({
+        name: "Regular User",
+        email: userEmail
+      });
+    }
+    
+    if (groupName) {
+      setGroupData({
+        name: groupName,
+        amount: 100.00
+      });
+    }
+  }, []);
+  
   return (
     <main>
       <Header />
@@ -32,7 +77,7 @@ export default function VirtualCardDetails() {
                     <div className="flex justify-between items-start mb-8">
                       <div>
                         <p className="text-xs opacity-70 mb-1">SplitApp</p>
-                        <h3 className="font-medium text-lg">La Toque Dinner</h3>
+                        <h3 className="font-medium text-lg">{groupData.name}</h3>
                       </div>
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
@@ -58,7 +103,7 @@ export default function VirtualCardDetails() {
                       </div>
                       <div>
                         <p className="text-xs opacity-70 mb-1">AMOUNT</p>
-                        <p className="font-medium">$420.50</p>
+                        <p className="font-medium">${groupData.amount.toFixed(2)}</p>
                       </div>
                     </div>
                   </div>
@@ -82,7 +127,7 @@ export default function VirtualCardDetails() {
                         </svg>
                         <span className="font-medium">Maximum Amount</span>
                       </div>
-                      <p className="text-sm text-gray-600">$420.50</p>
+                      <p className="text-sm text-gray-600">${groupData.amount.toFixed(2)}</p>
                     </div>
                     <div className="p-4 bg-gray-50 rounded-md">
                       <div className="flex items-center mb-2">
@@ -91,7 +136,7 @@ export default function VirtualCardDetails() {
                         </svg>
                         <span className="font-medium">Merchant Lock</span>
                       </div>
-                      <p className="text-sm text-gray-600">La Toque Restaurant</p>
+                      <p className="text-sm text-gray-600">Restaurant</p>
                     </div>
                     <div className="p-4 bg-gray-50 rounded-md">
                       <div className="flex items-center mb-2">
@@ -141,7 +186,7 @@ export default function VirtualCardDetails() {
                       </svg>
                       Share Card
                     </button>
-                    <Link href="/" className="btn btn-primary">
+                    <Link href={`/dashboard?email=${userData.email}`} className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
                       Back to Dashboard
                     </Link>
                   </div>
